@@ -1,0 +1,12 @@
+{
+  "name": "tetris-dark-floyd",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "npm run dev --prefix web",
+    "api": "npm run dev --prefix api",
+    "dev": "concurrently \"npm run client\" \"npm run api\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
