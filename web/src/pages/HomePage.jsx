@@ -1,7 +1,10 @@
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
+import { useAuth } from '../context/AuthContext'
 
-const HomePage = ({ onStart, onScores }) => {
+const HomePage = ({ onStart, onScores, onAuth, onLogout }) => {
+  const { user } = useAuth()
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center relative"
@@ -12,6 +15,30 @@ const HomePage = ({ onStart, onScores }) => {
       }}
     >
       <div className="absolute inset-0 bg-black opacity-60" />
+
+      {/* Usuario logueado */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-3">
+        {user ? (
+          <>
+            <span className="text-gray-400 text-sm tracking-widest uppercase">
+              {user.username}
+            </span>
+            <button
+              onClick={onLogout}
+              className="px-4 py-2 border border-gray-700 hover:border-red-800 text-gray-600 hover:text-red-500 text-sm uppercase tracking-widest rounded transition-colors"
+            >
+              Salir
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={onAuth}
+            className="px-4 py-2 border border-gray-700 hover:border-red-800 text-gray-400 hover:text-red-500 text-sm uppercase tracking-widest rounded transition-colors"
+          >
+            Login
+          </button>
+        )}
+      </div>
 
       <div className="relative z-10 flex flex-col items-center gap-8">
 
@@ -40,7 +67,7 @@ const HomePage = ({ onStart, onScores }) => {
               textShadow: '0 2px 4px rgba(0,0,0,0.8)',
             }}
           >
-            Jugar
+            {user ? 'Jugar' : 'Jugar como invitado'}
           </button>
 
           <button
