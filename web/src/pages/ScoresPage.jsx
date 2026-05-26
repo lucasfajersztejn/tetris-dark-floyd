@@ -1,11 +1,45 @@
+import { useState, useEffect } from 'react'
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
+import { useAuth } from '../context/AuthContext'
 import { useScores } from '../hooks/useScores'
-import { useState } from 'react'
+import { getTopScores, getMyScores } from '../services/api'
 
 const ScoresPage = ({ onBack }) => {
+  const { user } = useAuth()
   const { getScores, clearScores } = useScores()
-  const [scores, setScores] = useState(getScores())
+  const [scores, setScores] = useState([])
+  const [tab, setTab] = useState('global')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadScores()
+  }, [tab])
+
+  const loadScores = async () => {
+    setLoading(true)
+    try {
+      if (tab === 'global') {
+        const res = await getTopScores()
+        setScores(res.data)
+      } else if (tab === 'mine' && user) {
+        const res = await getMyScores()
+        setScores(res.data)
+      } else if (tab === 'local') {
+        setScores(getScores())
+      }
+    } catch {
+      if (tab === 'local') setScores(getScores())
+      else setScores([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleClearLocal = () => {
+    clearScores()
+    setScores([])
+  }
 
   return (
     <div
@@ -36,9 +70,49 @@ const ScoresPage = ({ onBack }) => {
           ))}
         </div>
 
-        {/* Tabla de scores */}
+        {/* Tabs */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => setTab('global')}
+            className={`px-6 py-2 text-sm uppercase tracking-widest rounded transition-colors ${
+              tab === 'global'
+                ? 'bg-red-600 text-white'
+                : 'border border-gray-700 text-gray-500 hover:text-white'
+            }`}
+          >
+            Global
+          </button>
+          {user && (
+            <button
+              onClick={() => setTab('mine')}
+              className={`px-6 py-2 text-sm uppercase tracking-widest rounded transition-colors ${
+                tab === 'mine'
+                  ? 'bg-red-600 text-white'
+                  : 'border border-gray-700 text-gray-500 hover:text-white'
+              }`}
+            >
+              Mis scores
+            </button>
+          )}
+          <button
+            onClick={() => setTab('local')}
+            className={`px-6 py-2 text-sm uppercase tracking-widest rounded transition-colors ${
+              tab === 'local'
+                ? 'bg-red-600 text-white'
+                : 'border border-gray-700 text-gray-500 hover:text-white'
+            }`}
+          >
+            Local
+          </button>
+        </div>
+
+        {/* Tabla */}
         <div className="w-full bg-black bg-opacity-60 border border-gray-700 rounded overflow-hidden">
-          {scores.length === 0 ? (
+          {loading ? (
+            <p className="text-gray-600 text-center py-12 uppercase tracking-widest text-sm animate-pulse">
+              Cargando...
+            </p>
+          ) : scores.length === 0 ? (
             <p className="text-gray-600 text-center py-12 uppercase tracking-widest text-sm">
               No hay puntuaciones todavía
             </p>
@@ -55,14 +129,14 @@ const ScoresPage = ({ onBack }) => {
               <tbody>
                 {scores.map((entry, index) => (
                   <tr
-                    key={entry.id}
+                    key={entry._id || entry.id}
                     className="border-b border-gray-800 hover:bg-gray-900 transition-colors"
                   >
                     <td className="py-3 px-4 text-gray-500 text-sm">
                       {index === 0 ? '👑' : index + 1}
                     </td>
                     <td className="py-3 px-4 text-white tracking-widest">
-                      {entry.name}
+                      {entry.username || entry.name}
                     </td>
                     <td
                       className="py-3 px-4 text-right font-bold"
@@ -71,7 +145,7 @@ const ScoresPage = ({ onBack }) => {
                       {entry.score.toLocaleString()}
                     </td>
                     <td className="py-3 px-4 text-right text-gray-600 text-sm">
-                      {entry.date}
+                      {entry.date || new Date(entry.createdAt).toLocaleDateString('es-ES')}
                     </td>
                   </tr>
                 ))}
@@ -94,9 +168,9 @@ const ScoresPage = ({ onBack }) => {
             Volver
           </button>
 
-          {scores.length > 0 && (
+          {tab === 'local' && scores.length > 0 && (
             <button
-              onClick={() => { clearScores(); setScores([]) }}
+              onClick={handleClearLocal}
               className="px-10 py-4 text-gray-600 font-bold uppercase tracking-widest text-lg rounded transition-all hover:scale-105 hover:text-red-500"
               style={{
                 background: 'transparent',

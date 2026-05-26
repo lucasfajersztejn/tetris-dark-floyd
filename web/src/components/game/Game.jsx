@@ -43,11 +43,11 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
   }, [linesJustCleared])
 
   useEffect(() => {
-    if (gameOver) {
-      playGameOver()
-      setTimeout(() => onGameOver(score), 3000)
-    }
-  }, [gameOver])
+  if (gameOver) {
+    playGameOver()
+    setTimeout(() => onGameOver(score, level, lines), 3000)
+  }
+}, [gameOver])
 
   return (
     <div

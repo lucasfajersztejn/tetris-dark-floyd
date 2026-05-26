@@ -1,16 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
+import { useAuth } from '../context/AuthContext'
 import { useScores } from '../hooks/useScores'
+import { saveScore } from '../services/api'
 
-const GameOverPage = ({ score, onRestart, onExit }) => {
-  const { saveScore } = useScores()
+const GameOverPage = ({ score, level, lines, onRestart, onExit }) => {
+  const { user } = useAuth()
+  const { saveScore: saveLocalScore } = useScores()
   const [name, setName] = useState('')
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
+
+  // Si está logueado guardamos automáticamente en el backend
+  useEffect(() => {
+    if (user) {
+      saveScore({ score, level, lines })
+        .then(() => setSaved(true))
+        .catch(() => setError('Error guardando el score'))
+    }
+  }, [])
 
   const handleSave = () => {
     if (!name.trim()) return
-    saveScore(name.trim(), score)
+    saveLocalScore(name.trim(), score)
     setSaved(true)
   }
 
@@ -42,10 +55,7 @@ const GameOverPage = ({ score, onRestart, onExit }) => {
 
         <div className="flex gap-1 mt-2">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-8 h-4 bg-gray-700 border border-gray-600"
-            />
+            <div key={i} className="w-8 h-4 bg-gray-700 border border-gray-600" />
           ))}
         </div>
 
@@ -62,37 +72,60 @@ const GameOverPage = ({ score, onRestart, onExit }) => {
           >
             {score}
           </p>
+          <div className="flex gap-6 justify-center mt-3">
+            <p className="text-gray-500 text-sm">
+              Nivel <span className="text-white font-bold">{level}</span>
+            </p>
+            <p className="text-gray-500 text-sm">
+              Líneas <span className="text-white font-bold">{lines}</span>
+            </p>
+          </div>
         </div>
 
         {/* Guardar score */}
-        {!saved ? (
-          <div className="flex flex-col items-center gap-3 mt-2">
-            <p className="text-gray-400 text-sm uppercase tracking-widest">
-              Guardá tu puntuación
-            </p>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSave()}
-                placeholder="Tu nombre"
-                maxLength={20}
-                className="px-4 py-2 bg-black border border-gray-600 text-white rounded focus:outline-none focus:border-red-600 tracking-widest"
-              />
-              <button
-                onClick={handleSave}
-                disabled={!name.trim()}
-                className="px-6 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold uppercase tracking-widest rounded transition-colors"
-              >
-                Guardar
-              </button>
-            </div>
+        {user ? (
+          <div className="flex flex-col items-center gap-2">
+            {saved ? (
+              <p className="text-green-500 text-sm uppercase tracking-widest">
+                ✓ Score guardado como <span className="font-bold">{user.username}</span>
+              </p>
+            ) : (
+              <p className="text-gray-500 text-sm uppercase tracking-widest animate-pulse">
+                Guardando score...
+              </p>
+            )}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
           </div>
         ) : (
-          <p className="text-green-500 text-sm uppercase tracking-widest mt-2">
-            ✓ Puntuación guardada
-          </p>
+          !saved ? (
+            <div className="flex flex-col items-center gap-3 mt-2">
+              <p className="text-gray-400 text-sm uppercase tracking-widest">
+                Guardá tu puntuación
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+                  placeholder="Tu nombre"
+                  maxLength={20}
+                  className="px-4 py-2 bg-black border border-gray-600 text-white rounded focus:outline-none focus:border-red-600 tracking-widest"
+                />
+                <button
+                  onClick={handleSave}
+                  disabled={!name.trim()}
+                  className="px-6 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold uppercase tracking-widest rounded transition-colors"
+                >
+                  Guardar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="text-green-500 text-sm uppercase tracking-widest mt-2">
+              ✓ Puntuación guardada
+            </p>
+          )
         )}
 
         <p className="text-gray-500 text-sm italic tracking-widest">
