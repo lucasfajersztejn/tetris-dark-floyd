@@ -1,8 +1,8 @@
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 
-const HomePage = ({ onStart, onScores, onAuth, onLogout }) => {
+const HomePage = ({ onStart, onScores, onAuth, onLogout, onAdmin }) => {
   const { user } = useAuth()
 
   return (
@@ -18,6 +18,14 @@ const HomePage = ({ onStart, onScores, onAuth, onLogout }) => {
 
       {/* Usuario logueado */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-3">
+        {user?.role === 'admin' && (
+          <button
+            onClick={onAdmin}
+            className="px-4 py-2 border border-red-900 hover:border-red-600 text-red-800 hover:text-red-500 text-sm uppercase tracking-widest rounded transition-colors"
+          >
+            Admin
+          </button>
+        )}
         {user ? (
           <>
             <span className="text-gray-400 text-sm tracking-widest uppercase">

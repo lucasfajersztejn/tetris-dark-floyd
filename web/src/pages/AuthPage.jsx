@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { login, register } from '../services/api'
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'

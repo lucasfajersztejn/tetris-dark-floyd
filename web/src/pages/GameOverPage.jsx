@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from  '../context/useAuth'
 import { useScores } from '../hooks/useScores'
 import { saveScore } from '../services/api'
 

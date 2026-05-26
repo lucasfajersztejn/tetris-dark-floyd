@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { useAuth } from './context/AuthContext'
+import { useAuth } from './context/useAuth'
 import HomePage from './pages/HomePage'
 import AuthPage from './pages/AuthPage'
 import Game from './components/game/Game'
 import GameOverPage from './pages/GameOverPage'
 import ScoresPage from './pages/ScoresPage'
 import { useSound } from './hooks/useSound'
+import AdminPage from './pages/AdminPage'
 
 function App() {
   const { user, logoutUser } = useAuth()
@@ -49,6 +50,7 @@ function App() {
           onScores={() => setScreen('scores')}
           onAuth={() => setScreen('auth')}
           onLogout={() => { logoutUser(); setScreen('home') }}
+          onAdmin={() => setScreen('admin')}
         />
       )}
       {screen === 'auth' && (
@@ -77,6 +79,9 @@ function App() {
       )}
       {screen === 'scores' && (
         <ScoresPage onBack={() => setScreen('home')} />
+      )}
+      {screen === 'admin' && (
+        <AdminPage onBack={() => setScreen('home')} />
       )}
     </>
   )
