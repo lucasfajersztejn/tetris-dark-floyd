@@ -18,6 +18,7 @@ export const useGameLogic = () => {
   const [linesJustCleared, setLinesJustCleared] = useState(0)
   const [wallAnimation, setWallAnimation] = useState(false)
   const [wallRows, setWallRows] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
   // Genera la posición inicial de una pieza nueva
   const startPosition = (shape) => ({
@@ -159,6 +160,10 @@ export const useGameLogic = () => {
         case 'ArrowDown':  drop();      break
         case 'ArrowUp':    rotate();    break
         case ' ':          hardDrop();  break
+        case 'p':
+        case 'P':
+          setIsPaused(prev => !prev)
+          break
         default: break
       }
     }
@@ -168,7 +173,7 @@ export const useGameLogic = () => {
   }, [isPlaying, moveLeft, moveRight, drop, rotate, hardDrop])
 
   // Intervalo de caída automática
-  useInterval(drop, isPlaying ? SPEEDS[level] : null)
+  useInterval(drop, isPlaying && !isPaused ? SPEEDS[level] : null)
 
   // Tablero visible con la pieza actual dibujada
   const displayBoard = currentPiece
@@ -204,6 +209,7 @@ export const useGameLogic = () => {
     level,
     gameOver,
     isPlaying,
+    isPaused,
     startGame,
     linesJustCleared,
     wallRows,

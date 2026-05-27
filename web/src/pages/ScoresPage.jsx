@@ -25,9 +25,7 @@ const ScoresPage = ({ onBack }) => {
       } else if (tab === 'mine' && user) {
         const res = await getMyScores()
         setScores(res.data)
-      } else if (tab === 'local') {
-        setScores(getScores())
-      }
+      } 
     } catch {
       if (tab === 'local') setScores(getScores())
       else setScores([])
@@ -94,16 +92,6 @@ const ScoresPage = ({ onBack }) => {
               Mis scores
             </button>
           )}
-          <button
-            onClick={() => setTab('local')}
-            className={`px-6 py-2 text-sm uppercase tracking-widest rounded transition-colors ${
-              tab === 'local'
-                ? 'bg-red-600 text-white'
-                : 'border border-gray-700 text-gray-500 hover:text-white'
-            }`}
-          >
-            Local
-          </button>
         </div>
 
         {/* Tabla */}
@@ -167,19 +155,6 @@ const ScoresPage = ({ onBack }) => {
           >
             Volver
           </button>
-
-          {tab === 'local' && scores.length > 0 && (
-            <button
-              onClick={handleClearLocal}
-              className="px-10 py-4 text-gray-600 font-bold uppercase tracking-widest text-lg rounded transition-all hover:scale-105 hover:text-red-500"
-              style={{
-                background: 'transparent',
-                border: '2px solid #333',
-              }}
-            >
-              Borrar
-            </button>
-          )}
         </div>
 
       </div>

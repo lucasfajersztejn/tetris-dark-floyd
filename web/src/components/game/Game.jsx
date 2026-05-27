@@ -15,6 +15,7 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
     lines,
     gameOver,
     isPlaying,
+    isPaused,
     startGame,
     linesJustCleared,
     wallRows,
@@ -105,6 +106,22 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
                 />
                 <p className="text-gray-700 text-lg tracking-widest uppercase animate-pulse">
                   The Wall is Complete
+                </p>
+              </div>
+            )}
+
+            {isPaused && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-10"
+                style={{ background: 'rgba(0,0,0,0.7)' }}
+              >
+                <p
+                  className="text-4xl font-bold uppercase tracking-widest animate-pulse"
+                  style={{ color: '#C0392B', textShadow: '0 0 30px rgba(192,57,43,0.8)' }}
+                >
+                  Pausa
+                </p>
+                <p className="text-gray-500 text-sm uppercase tracking-widest mt-2">
+                  Presioná P para continuar
                 </p>
               </div>
             )}
