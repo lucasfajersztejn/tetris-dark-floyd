@@ -1,4 +1,4 @@
-import brickFaceUrl from '../../assets/images/brick-face.png'
+import brickFaceUrl from '../../assets/images/brick-face (1).png'
 
 // Precargar imagen una sola vez fuera del componente
 const brickImage = new Image()
