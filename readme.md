@@ -89,26 +89,26 @@ A fully-featured Tetris game with a **Pink Floyd / The Wall** theme, built as a 
 
 ## 📁 Project Structure
 
+```
 tetris-dark-floyd/
-├── web/                  # React frontend
-│   ├── src/
-│   │   ├── components/   # Game board, pieces, UI
-│   │   ├── hooks/        # useGameLogic, useSound, useInterval
-│   │   ├── pages/        # Home, Game, Scores, Profile, Admin
-│   │   ├── context/      # Auth context
-│   │   ├── services/     # API calls
-│   │   ├── utils/        # Board and piece utilities
-│   │   └── constants/    # Tetrominos, game config
-└── api/                  # Node.js backend
-└── src/
-├── controllers/  # Auth, users, scores
-├── models/       # User, Score
-├── routes/       # API routes
-├── middleware/   # JWT auth
-└── config/       # Database connection
+├── web/                     # React frontend
+│   └── src/
+│       ├── components/      # Game board, pieces, UI
+│       ├── hooks/           # useGameLogic, useSound, useInterval
+│       ├── pages/           # Home, Game, Scores, Profile, Admin
+│       ├── context/         # Auth context
+│       ├── services/        # API calls
+│       ├── utils/           # Board and piece utilities
+│       └── constants/       # Tetrominos, game config
+└── api/                     # Node.js backend
+    └── src/
+        ├── controllers/     # Auth, users, scores
+        ├── models/          # User, Score
+        ├── routes/          # API routes
+        ├── middleware/      # JWT auth
+        └── config/          # Database connection
+```
 
-
----
 
 ## 🔧 Local Development
 
@@ -138,10 +138,12 @@ cd ../api && npm install
 
 Create `api/.env`:
 
+```
 PORT=5000
 MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 FRONTEND_URL=http://localhost:5173
+```
 
 ### Run both servers
 ```bash
