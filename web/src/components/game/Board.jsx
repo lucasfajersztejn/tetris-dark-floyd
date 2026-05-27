@@ -1,6 +1,8 @@
 import brickFace from '../../assets/images/brick-face (1).png'
 
-const Board = ({ board }) => {
+const Board = ({ board, wallRows = 0 }) => {
+  const totalRows = board.length
+
   return (
     <div
       className="grid border-2 border-gray-700"
@@ -11,23 +13,32 @@ const Board = ({ board }) => {
       }}
     >
       {board.map((row, y) =>
-        row.map((cell, x) => (
-          <div
-            key={`${y}-${x}`}
-            style={{
-              backgroundColor: cell.value ? cell.color : '#0a0a0a',
-              backgroundImage: cell.value ? `url(${brickFace})` : 'none',
-              backgroundSize: 'cover',
-              backgroundBlendMode: 'multiply',
-              border: cell.value
-                ? '1px solid rgba(0,0,0,0.5)'
-                : '1px solid #111111',
-              boxShadow: cell.value
-                ? 'inset 0 0 4px rgba(0,0,0,0.6)'
-                : 'none',
-            }}
-          />
-        ))
+        row.map((cell, x) => {
+          const isWall = wallRows > 0 && y >= totalRows - wallRows
+
+          return (
+            <div
+              key={`${y}-${x}`}
+              style={{
+                backgroundColor: isWall ? '#e8e8e8' : cell.value ? cell.color : '#0a0a0a',
+                backgroundImage: isWall || cell.value ? `url(${brickFace})` : 'none',
+                backgroundSize: 'cover',
+                backgroundBlendMode: isWall ? 'overlay' : 'multiply',
+                border: isWall
+                  ? '1px solid rgba(0,0,0,0.3)'
+                  : cell.value
+                  ? '1px solid rgba(0,0,0,0.5)'
+                  : '1px solid #111111',
+                boxShadow: isWall
+                  ? 'inset 0 0 6px rgba(255,255,255,0.3)'
+                  : cell.value
+                  ? 'inset 0 0 4px rgba(0,0,0,0.6)'
+                  : 'none',
+                transition: 'background-color 0.05s ease',
+              }}
+            />
+          )
+        })
       )}
     </div>
   )

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import mainScreen from '../../assets/images/main-screen.png'
 import buttonTexture from '../../assets/images/button-texture.png'
+import logoGameOver from '../../assets/images/logo_game_over.png'
 import { useGameLogic } from '../../hooks/useGameLogic'
 import Board from './Board'
 import GameInfo from './GameInfo'
@@ -16,8 +17,8 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
     isPlaying,
     startGame,
     linesJustCleared,
+    wallRows,
   } = useGameLogic()
-
   const [muted, setMuted] = useState(false)
 
   const toggleMute = () => {
@@ -45,7 +46,7 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
   useEffect(() => {
   if (gameOver) {
     playGameOver()
-    setTimeout(() => onGameOver(score, level, lines), 3000)
+    setTimeout(() => onGameOver(score, level, lines), 5000) // Espera 5 segundos para mostrar el mensaje de muro completo
   }
 }, [gameOver])
 
@@ -92,7 +93,22 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
         </h1>
 
         <div className="flex items-start">
-          <Board board={displayBoard} />
+          <div className="relative">
+            <Board board={displayBoard} wallRows={wallRows} />
+            {gameOver && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <img
+                  src={logoGameOver}
+                  alt="The Wall is Complete"
+                  className="w-64"
+                  style={{ filter: 'drop-shadow(0 0 20px rgba(192,57,43,0.8))' }}
+                />
+                <p className="text-gray-700 text-lg tracking-widest uppercase animate-pulse">
+                  The Wall is Complete
+                </p>
+              </div>
+            )}
+          </div>
           <GameInfo
             score={score}
             level={level}
@@ -116,11 +132,19 @@ const Game = ({ onExit, onGameOver, playBg, pauseBg, stopAll, playLineClear, pla
           </button>
         )}
 
-        {gameOver && (
-          <p className="mt-8 text-gray-400 text-lg tracking-widest uppercase animate-pulse">
-            The Wall is complete...
-          </p>
-        )}
+        {/* {gameOver && (
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <img
+              src={logoGameOver}
+              alt="The Wall is Complete"
+              className="w-64 animate-pulse"
+              style={{ filter: 'drop-shadow(0 0 20px rgba(192,57,43,0.8))' }}
+            />
+            <p className="text-gray-400 text-lg tracking-widest uppercase">
+              Is Complete
+            </p>
+          </div>
+        )} */}
 
         {!gameOver && (
           <button

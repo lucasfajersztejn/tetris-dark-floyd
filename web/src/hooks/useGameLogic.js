@@ -16,6 +16,8 @@ export const useGameLogic = () => {
   const [gameOver, setGameOver] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [linesJustCleared, setLinesJustCleared] = useState(0)
+  const [wallAnimation, setWallAnimation] = useState(false)
+  const [wallRows, setWallRows] = useState(0)
 
   // Genera la posición inicial de una pieza nueva
   const startPosition = (shape) => ({
@@ -31,8 +33,8 @@ export const useGameLogic = () => {
 
     // Si la posición inicial ya colisiona, game over
     if (!isValidPosition(board, piece.shape, pos)) {
-      setGameOver(true)
       setIsPlaying(false)
+      setWallAnimation(true)
       return
     }
 
@@ -173,6 +175,27 @@ export const useGameLogic = () => {
     ? drawPieceOnBoard(board, currentPiece, position)
     : board
 
+  useEffect(() => {
+    if (!wallAnimation) return
+
+    let row = BOARD_HEIGHT - 1
+    const interval = setInterval(() => {
+      if (row < 0) {
+        clearInterval(interval)
+        // Espera 3 segundos con el muro completo antes de game over
+        setTimeout(() => {
+          setGameOver(true)
+          setWallAnimation(false)
+        }, 500)
+        return
+      }
+      setWallRows(BOARD_HEIGHT - row)
+      row--
+    }, 100)
+
+    return () => clearInterval(interval)
+  }, [wallAnimation])
+
   return {
     displayBoard,
     nextPiece,
@@ -183,5 +206,6 @@ export const useGameLogic = () => {
     isPlaying,
     startGame,
     linesJustCleared,
+    wallRows,
   }
 }
