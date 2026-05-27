@@ -2,7 +2,7 @@ import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
 import { useAuth } from '../context/useAuth'
 
-const HomePage = ({ onStart, onScores, onAuth, onLogout, onAdmin }) => {
+const HomePage = ({ onStart, onScores, onAuth, onLogout, onAdmin, onProfile }) => {
   const { user } = useAuth()
 
   return (
@@ -28,9 +28,12 @@ const HomePage = ({ onStart, onScores, onAuth, onLogout, onAdmin }) => {
         )}
         {user ? (
           <>
-            <span className="text-gray-400 text-sm tracking-widest uppercase">
+            <button
+              onClick={onProfile}
+              className="text-gray-400 hover:text-white text-sm tracking-widest uppercase transition-colors"
+            >
               {user.username}
-            </span>
+            </button>
             <button
               onClick={onLogout}
               className="px-4 py-2 border border-gray-700 hover:border-red-800 text-gray-600 hover:text-red-500 text-sm uppercase tracking-widest rounded transition-colors"
@@ -75,7 +78,7 @@ const HomePage = ({ onStart, onScores, onAuth, onLogout, onAdmin }) => {
               textShadow: '0 2px 4px rgba(0,0,0,0.8)',
             }}
           >
-            {user ? 'Jugar' : 'Jugar como invitado'}
+            Jugar
           </button>
 
           <button

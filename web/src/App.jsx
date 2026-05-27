@@ -7,6 +7,7 @@ import GameOverPage from './pages/GameOverPage'
 import ScoresPage from './pages/ScoresPage'
 import { useSound } from './hooks/useSound'
 import AdminPage from './pages/AdminPage'
+import ProfilePage from './pages/ProfilePage'
 
 function App() {
   const { user, logoutUser } = useAuth()
@@ -46,11 +47,12 @@ function App() {
     <>
       {screen === 'home' && (
         <HomePage
-          onStart={() => user ? setScreen('game') : setScreen('auth')}
+          onStart={() => setScreen(user ? 'game' : 'auth')}
           onScores={() => setScreen('scores')}
           onAuth={() => setScreen('auth')}
           onLogout={() => { logoutUser(); setScreen('home') }}
           onAdmin={() => setScreen('admin')}
+          onProfile={() => setScreen('profile')}
         />
       )}
       {screen === 'auth' && (
@@ -82,6 +84,12 @@ function App() {
       )}
       {screen === 'admin' && (
         <AdminPage onBack={() => setScreen('home')} />
+      )}
+      {screen === 'profile' && (
+        <ProfilePage
+          onBack={() => setScreen('home')}
+          onDeleted={() => setScreen('home')}
+        />
       )}
     </>
   )
