@@ -1,14 +1,11 @@
-import brickFace from '../../assets/images/brick-face (1).png'
-import { useEffect } from 'react'
+import brickFaceUrl from '../../assets/images/brick-face.png'
+
+// Precargar imagen una sola vez fuera del componente
+const brickImage = new Image()
+brickImage.src = brickFaceUrl
 
 const Board = ({ board, wallRows = 0 }) => {
   const totalRows = board.length
-
-  // Precargar la textura
-  useEffect(() => {
-    const img = new Image()
-    img.src = brickFace
-  }, [])
 
   return (
     <div
@@ -28,7 +25,7 @@ const Board = ({ board, wallRows = 0 }) => {
               key={`${y}-${x}`}
               style={{
                 backgroundColor: isWall ? '#e8e8e8' : cell.value ? cell.color : '#0a0a0a',
-                backgroundImage: isWall || cell.value ? `url(${brickFace})` : 'none',
+                backgroundImage: isWall || cell.value ? `url(${brickFaceUrl})` : 'none',
                 backgroundSize: 'cover',
                 backgroundBlendMode: isWall ? 'overlay' : 'multiply',
                 border: isWall
@@ -41,7 +38,6 @@ const Board = ({ board, wallRows = 0 }) => {
                   : cell.value
                   ? 'inset 0 0 4px rgba(0,0,0,0.6)'
                   : 'none',
-                transition: 'background-color 0.05s ease',
               }}
             />
           )
