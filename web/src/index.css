@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .brick-cell {
-  background-image: url('/src/assets/images/brick-face.png');
+  background-image: url('/src/assets/images/brick-face (1).png');
   background-size: cover;
   background-blend-mode: multiply;
 }

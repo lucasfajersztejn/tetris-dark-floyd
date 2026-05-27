@@ -98,6 +98,7 @@ const HomePage = ({ onStart, onScores, onAuth, onLogout, onAdmin, onProfile }) =
           <span>← → Mover</span>
           <span>↓ Bajar</span>
           <span>Space Hard drop</span>
+          <span>P pause</span>
         </div>
 
       </div>
