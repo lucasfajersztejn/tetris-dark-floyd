@@ -1,7 +1,14 @@
 import brickFace from '../../assets/images/brick-face (1).png'
+import { useEffect } from 'react'
 
 const Board = ({ board, wallRows = 0 }) => {
   const totalRows = board.length
+
+  // Precargar la textura
+  useEffect(() => {
+    const img = new Image()
+    img.src = brickFace
+  }, [])
 
   return (
     <div
