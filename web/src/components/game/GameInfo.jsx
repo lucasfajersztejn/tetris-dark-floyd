@@ -19,25 +19,29 @@ const GameInfo = ({ score, level, lines, nextPiece }) => {
 
       <div className="bg-gray-900 border border-gray-700 p-4 rounded">
         <p className="text-gray-400 text-xs uppercase tracking-widest mb-2">Siguiente</p>
-        <div
-          className="grid gap-px"
-          style={{
-            gridTemplateColumns: `repeat(${nextPiece?.shape[0].length || 4}, 1fr)`,
-          }}
-        >
-          {nextPiece?.shape.map((row, y) =>
-            row.map((cell, x) => (
-              <div
-                key={`${y}-${x}`}
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: cell ? nextPiece.color : 'transparent',
-                  border: cell ? '1px solid rgba(255,255,255,0.1)' : 'none',
-                }}
-              />
-            ))
-          )}
+        <div className="flex justify-center items-center">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${nextPiece?.shape[0].length || 4}, 20px)`,
+              gridTemplateRows: `repeat(${nextPiece?.shape.length || 4}, 20px)`,
+              gap: '1px',
+            }}
+          >
+            {nextPiece?.shape.map((row, y) =>
+              row.map((cell, x) => (
+                <div
+                  key={`${y}-${x}`}
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    backgroundColor: cell ? nextPiece.color : 'transparent',
+                    border: cell ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                  }}
+                />
+              ))
+            )}
+          </div>
         </div>
       </div>
 
