@@ -51,3 +51,22 @@ export const deleteMe = async (req, res) => {
     res.status(500).json({ message: 'Error eliminando cuenta', error: error.message })
   }
 }
+
+// PUT /api/users/me — el propio usuario edita su perfil
+export const updateMe = async (req, res) => {
+  try {
+    console.log('body:', req.body)
+    console.log('user id:', req.user._id)
+    const { username, age, country } = req.body
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { username, age, country },
+      { new: true, runValidators: true }
+    )
+    console.log('updated user:', user)
+    res.json(user)
+  } catch (error) {
+    console.log('error:', error)
+    res.status(500).json({ message: 'Error actualizando perfil', error: error.message })
+  }
+}

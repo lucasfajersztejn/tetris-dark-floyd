@@ -29,5 +29,6 @@ export const updateUser = (id, data) => api.put(`/users/${id}`, data)
 export const deleteUser = (id) => api.delete(`/users/${id}`)
 export const deleteScore = (id) => api.delete(`/scores/${id}`)
 export const deleteMe = () => api.delete('/users/me')
+export const updateMe = (data) => api.put('/users/me', data)
 
 export default api

@@ -2,15 +2,22 @@ import { useState } from 'react'
 import mainScreen from '../assets/images/main-screen.png'
 import buttonTexture from '../assets/images/button-texture.png'
 import { useAuth } from '../context/useAuth'
-import { getMyScores, deleteMe } from '../services/api'
+import { getMyScores, deleteMe, updateMe } from '../services/api'
 import { useEffect } from 'react'
 
 const ProfilePage = ({ onBack, onDeleted }) => {
-  const { user, logoutUser } = useAuth()
+  const { user, logoutUser, updateUserData } = useAuth()
   const [scores, setScores] = useState([])
   const [loading, setLoading] = useState(true)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [error, setError] = useState('')
+  const [editing, setEditing] = useState(false)
+  const [editForm, setEditForm] = useState({
+    username: user?.username || '',
+    age: user?.age || '',
+    country: user?.country || '',
+  })
+  const [editSuccess, setEditSuccess] = useState(false)
 
   useEffect(() => {
     getMyScores()
@@ -31,6 +38,18 @@ const ProfilePage = ({ onBack, onDeleted }) => {
       onDeleted()
     } catch {
       setError('Error eliminando la cuenta')
+    }
+  }
+
+  const handleUpdate = async () => {
+    try {
+      const res = await updateMe(editForm)
+      updateUserData(res.data)
+      setEditSuccess(true)
+      setEditing(false)
+      setTimeout(() => setEditSuccess(false), 3000)
+    } catch {
+      setError('Error actualizando perfil')
     }
   }
 
@@ -61,6 +80,69 @@ const ProfilePage = ({ onBack, onDeleted }) => {
           {user?.email}
         </p>
 
+        {!editing ? (
+          <div className="flex flex-col items-center gap-1 mt-2">
+            {user?.age && (
+              <p className="text-gray-500 text-sm tracking-widest">
+                {user.age} años
+              </p>
+            )}
+            {user?.country && (
+              <p className="text-gray-500 text-sm tracking-widest uppercase">
+                {user.country}
+              </p>
+            )}
+            <button
+              onClick={() => setEditing(true)}
+              className="mt-2 px-4 py-1 border border-gray-700 hover:border-red-800 text-gray-600 hover:text-red-500 text-xs uppercase tracking-widest rounded transition-colors"
+            >
+              Editar perfil
+            </button>
+            {editSuccess && (
+              <p className="text-green-500 text-xs uppercase tracking-widest">
+                ✓ Perfil actualizado
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-3 mt-4 w-full max-w-xs">
+            <input
+              type="text"
+              placeholder="Nombre de usuario"
+              value={editForm.username}
+              onChange={(e) => setEditForm({ ...editForm, username: e.target.value })}
+              className="w-full px-4 py-2 bg-black border border-gray-600 text-white rounded focus:outline-none focus:border-red-600 tracking-widest text-sm"
+            />
+            <input
+              type="number"
+              placeholder="Edad"
+              value={editForm.age}
+              onChange={(e) => setEditForm({ ...editForm, age: e.target.value })}
+              className="w-full px-4 py-2 bg-black border border-gray-600 text-white rounded focus:outline-none focus:border-red-600 tracking-widest text-sm"
+            />
+            <input
+              type="text"
+              placeholder="País"
+              value={editForm.country}
+              onChange={(e) => setEditForm({ ...editForm, country: e.target.value })}
+              className="w-full px-4 py-2 bg-black border border-gray-600 text-white rounded focus:outline-none focus:border-red-600 tracking-widest text-sm"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={handleUpdate}
+                className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-widest text-sm rounded transition-colors"
+              >
+                Guardar
+              </button>
+              <button
+                onClick={() => setEditing(false)}
+                className="px-6 py-2 border border-gray-700 text-gray-500 hover:text-white font-bold uppercase tracking-widest text-sm rounded transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
         <div className="flex gap-1">
           {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} className="w-8 h-4 bg-gray-700 border border-gray-600" />

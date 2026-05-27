@@ -19,6 +19,18 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       match: [/^\S+@\S+\.\S+$/, 'El email no es válido'],
     },
+    age: {
+      type: Number,
+      min: 1,
+      max: 120,
+      default: null,
+    },
+    country: {
+      type: String,
+      trim: true,
+      maxlength: 50,
+      default: null,
+    },
     password: {
       type: String,
       required: [true, 'La contraseña es obligatoria'],
