@@ -109,6 +109,29 @@ tetris-dark-floyd/
         └── config/          # Database connection
 ```
 
+## 🧪 API Testing
+
+All API routes were tested using **Postman**. The full collection is available in the repository.
+
+📁 Collection file: `api/src/postman/Tetris-Dark-Floyd.postman_collection.json`
+
+### Tested endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/auth/register` | ❌ | Register new user |
+| POST | `/api/auth/login` | ❌ | Login and get token |
+| GET | `/api/auth/me` | ✅ | Get current user |
+| GET | `/api/scores` | ❌ | Get global top scores |
+| GET | `/api/scores/me` | ✅ | Get my scores |
+| POST | `/api/scores` | ✅ | Save score after game |
+| DELETE | `/api/scores/:id` | ✅ Admin | Delete a score |
+| GET | `/api/users` | ✅ Admin | Get all users |
+| PUT | `/api/users/me` | ✅ | Update my profile |
+| DELETE | `/api/users/me` | ✅ | Delete my account |
+| PUT | `/api/users/:id` | ✅ Admin | Update any user |
+| DELETE | `/api/users/:id` | ✅ Admin | Deactivate user |
+
 
 ## 🔧 Local Development
 
