@@ -122,6 +122,24 @@ Core API routes were tested using **Postman**. The collection is available in th
 | POST | `/api/scores` | ✅ | Save score after game |
 | GET | `/api/scores` | ❌ | Get global top scores |
 
+## ✅ Automated Tests
+
+Backend routes tested with **Jest** and **Supertest**.
+
+```bash
+cd api
+npm test
+```
+
+### Test coverage
+
+| Suite | Tests | Status |
+|-------|-------|--------|
+| Auth Routes | 9 | ✅ Passing |
+| Score Routes | 7 | ✅ Passing |
+| **Total** | **16** | **✅ 16/16** |
+
+Tests run in an isolated MongoDB test database, automatically created and destroyed on each run.
 
 ## 🔧 Local Development
 
