@@ -44,7 +44,6 @@ A fully-featured Tetris game with a **Pink Floyd / The Wall** theme, built as a 
 
 ### Audio
 - Pink Floyd background music during gameplay
-- Sound effects on line clear and game over
 - Volume control and mute button
 
 ### User System
