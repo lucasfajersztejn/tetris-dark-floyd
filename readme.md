@@ -111,12 +111,6 @@ tetris-dark-floyd/
 
 ## 🧪 API Testing
 
-All API routes were tested using **Postman**. The full collection is available in the repository.
-
-📁 Collection file: `api/src/postman/Tetris-Dark-Floyd.postman_collection.json`
-
-## 🧪 API Testing
-
 Core API routes were tested using **Postman**. The collection is available in the repository.
 
 📁 Collection file: `api/src/postman/Tetris-Dark-Floyd.postman_collection.json`

@@ -1,13 +1,15 @@
 {
   "name": "tetris-dark-floyd-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit --runInBand"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,10 @@
     "mongoose": "^9.6.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@jest/globals": "^30.4.1",
+    "cross-env": "^10.1.0",
+    "jest": "^30.4.2",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   }
 }
