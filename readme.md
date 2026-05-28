@@ -141,6 +141,21 @@ npm test
 
 Tests run in an isolated MongoDB test database, automatically created and destroyed on each run.
 
+### Frontend Tests
+
+Game logic tested with **Vitest** and **React Testing Library**.
+
+```bash
+cd web
+npm test
+```
+
+| Suite | Tests | Status |
+|-------|-------|--------|
+| Board Utils | 10 | ✅ Passing |
+| Piece Utils | 9 | ✅ Passing |
+| **Total** | **19** | **✅ 19/19** |
+
 ## 🔧 Local Development
 
 ### Prerequisites
